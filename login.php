@@ -5,8 +5,11 @@
     $dbname = 'gestion_hotel';
     $username = 'root'; 
     $password = ''; 
-    $error1 = "";
-    $error2 = "";
+    $empty_email = "";
+    $empty_password = "";
+    $password_8="";
+    $error="";
+    $emailError="";
 
 
     try {
@@ -22,45 +25,72 @@
         $password = ($_POST['password'] ?? '');
         $email = trim($_POST['email'] ?? '');
        
-        if (empty($email) || empty($password)){
-        $error1 = "Veuillez saisir votre adresse e-mail.";
+        if (empty($email) ){
+        $empty_email = "Veuillez saisir votre adresse e-mail.";
         }
-        if (strlen($password)<8){
-            $error2="the password need to be 8 charcter";
+        elseif (empty($password)){
+            $empty_password="Veuillez saisir votre mot de passe.";
+        }
+        elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $emailError = "Veuillez saisir une adresse e-mail valide.";
+        }
+        elseif(strlen($password)<8){
+        $password_8="Le mot de passe doit contenir au moins 8 caractères.";
         }
         else{
-             $stmt = $pdo->prepare("SELECT * FROM admin WHERE email = ?");
-        $stmt->execute([$email]);
-        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+            $stmt = $pdo->prepare("SELECT * FROM admin WHERE email = ?");
+            $stmt->execute([$email]);
+            $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($admin && password_verify($password, $admin['password_hash'])) {
-            
+            session_regenerate_id(true);
             $_SESSION['admin_id'] = $admin['id'];
             $_SESSION['admin_name'] = $admin['username'];
             
-            header("Location: dashboard.php"); 
+            header("Location: dashboard.php");
+             
             exit();}
             else {
-            $error = "Invalid email or password.";
+            $error = "Adresse e-mail ou mot de passe incorrect.";
         }
         }
 
     }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <form action="login.php" method="POST">
-        <label></label>
-        <input type="email" id="email" name="email" placeholder="email" required><br><br>
-        
-        <input type="password" id="password" name="password" placeholder="password<?php echo $error2?>" required> 
+            <h1>login page</h1>
+        <label for="email">Adresse e-mail</label><br>
+        <input type="email" id="email" name="email" placeholder="Saisissez votre e-mail" require ><br>
+        <span style="color: red;"><?php 
+        if (!empty($empty_email)){
+            echo $empty_email;} 
+        elseif(!empty($emailError)){
+            echo $emailError;
+        }
+            ?></span><br>
+
+        <label for="password">Mot de passe</label><br>
+        <input type="password" id="password" name="password" placeholder="Saisissez votre mot de passe" required><br>
+        <span style="color: red;"><?php 
+        if (!empty($password_8)){
+            echo $password_8;} 
+        elseif(!empty($empty_password)){
+            echo $empty_password;
+        }
+        elseif(!empty($error)){
+            echo $error;
+        }
+            ?></span><br>
 
         <button type="submit" >login</button>
 

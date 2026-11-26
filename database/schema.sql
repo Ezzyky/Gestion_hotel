@@ -11,3 +11,10 @@ CREATE TABLE admin (
     role VARCHAR(20) DEFAULT 'admin' NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+INSERT INTO admin (username, email, password_hash)
+VALUES (
+    'abdo_admin',
+    'ezzyky.a371@ucd.ac.ma',
+    '$2y$12$VE1RCD6n0tEIHiVan3D0pupW2kFDPVSkaERyM3TYn9PrjhyeORMR6'
+);
