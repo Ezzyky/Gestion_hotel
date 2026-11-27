@@ -1,24 +1,12 @@
 <?php
     session_start();
    
-    $host = 'localhost';
-    $dbname = 'gestion_hotel';
-    $username = 'root'; 
-    $password = ''; 
+    include "../utils/auth.php";
     $empty_email = "";
     $empty_password = "";
     $password_8="";
     $error="";
     $emailError="";
-
-
-    try {
-        $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch(PDOException $e) {
-        die("Connection failed: " . $e->getMessage());
-    }
-
 
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         
@@ -47,7 +35,7 @@
             $_SESSION['admin_id'] = $admin['id'];
             $_SESSION['admin_name'] = $admin['username'];
             
-            header("Location: dashboard.php");
+            header("Location: ../dashboard.php");
              
             exit();}
             else {
@@ -67,20 +55,20 @@
 </head>
 <body>
 
-    <form action="login.php" method="POST">
+    <form action="/auth/login.php" method="POST">
             <h1>login page</h1>
         <label for="email">Adresse e-mail</label><br>
-        <input type="email" id="email" name="email" placeholder="Saisissez votre e-mail" require ><br>
+        <input type="email" id="email" name="email" placeholder="Saisissez votre e-mail"><br>
         <span style="color: red;"><?php 
         if (!empty($empty_email)){
             echo $empty_email;} 
         elseif(!empty($emailError)){
             echo $emailError;
         }
-            ?></span><br>
+            ?></span>
 
         <label for="password">Mot de passe</label><br>
-        <input type="password" id="password" name="password" placeholder="Saisissez votre mot de passe" required><br>
+        <input type="password" id="password" name="password" placeholder="Saisissez votre mot de passe" ><br>
         <span style="color: red;"><?php 
         if (!empty($password_8)){
             echo $password_8;} 
