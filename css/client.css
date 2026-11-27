@@ -1,0 +1,343 @@
+/* ============ clients.css — dashboard layout, same purple theme as the login ============ */
+/* Pages: index.php, Ajouter.php, Modifier.php, details.php (CSS only, no HTML change) */
+
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@500;700&display=swap');
+
+:root {
+  --violet: #667eea;
+  --violet-dark: #5568d3;
+  --purple: #764ba2;
+  --night: #2b2550;
+  --night-deep: #1c1736;
+  --page: #f2f3fa;
+  --line: #e8e9f3;
+  --sidebar: 240px;
+  --topbar: 60px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  padding: calc(var(--topbar) + 32px) 32px 40px calc(var(--sidebar) + 32px);
+  font-family: "Segoe UI", sans-serif;
+  color: #444;
+  background: var(--page);
+}
+
+/* ---------- SIDEBAR ---------- */
+body::before {
+  content: "Admin Panel";
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: var(--sidebar);
+  padding-top: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.3rem;
+  line-height: 34px;
+  color: #fff;
+  text-shadow: 2px 3px 8px rgba(0, 0, 0, 0.35);
+  background: linear-gradient(180deg, var(--night), var(--night-deep));
+  border-right: 3px solid var(--purple);
+  z-index: 20;
+}
+
+/* ---------- TOP BAR ---------- */
+body::after {
+  content: "Hotel Administration";
+  position: fixed;
+  top: 0; left: var(--sidebar); right: 0;
+  height: var(--topbar);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(135deg, var(--violet), var(--purple));
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  z-index: 10;
+}
+
+body:has(table)::after                      { content: "Clients"; }
+body:has(button[name="ajouter"])::after     { content: "Clients  /  Ajouter"; white-space: pre; }
+body:has(#modifier)::after                  { content: "Clients  /  Modifier"; white-space: pre; }
+body:has(ul)::after                         { content: "Clients  /  Détails"; white-space: pre; }
+
+/* ---------- PAGE TITLES ---------- */
+form > h1,
+body > h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--night);
+}
+
+form > h1 {
+  width: 100%; 
+  margin-bottom: 6px;
+  padding-bottom: 14px;
+  border-bottom: 3px solid var(--violet);
+}
+
+/* ---------- FORM CARD (Ajouter / Modifier) ---------- */
+form:has(> h1) {
+  width: 100%;
+  max-width: 100%; /* Forces card to take the full width of the screen */
+  padding: 25px 30px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(43, 37, 80, 0.12);
+  animation: fadeIn 0.5s ease;
+  
+  /* Flexbox for a spacious horizontal layout */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center; 
+  gap: 15px 20px; /* Spacing between fields */
+}
+
+form br { display: none; }
+
+label {
+  display: inline-block;
+  width: auto;
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #444;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+/* --- INPUTS taking up space --- */
+input:not([type="hidden"]),
+select {
+  display: inline-block;
+  width: auto; 
+  /* flex: grow shrink basis. Basis of 220px ensures they are wide and fill the line */
+  flex: 1 1 220px; 
+  min-width: 180px; /* Prevents them from getting too narrow */
+  padding: 12px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: #333;
+  background: #fff;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+select { cursor: pointer; }
+input::placeholder { color: #aaa; }
+
+input:focus,
+select:focus {
+  border-color: var(--violet);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+/* live email check */
+#email:not(:placeholder-shown):invalid { border-color: #e74c3c; animation: shake 0.3s; }
+#email:not(:placeholder-shown):valid   { border-color: #2ecc71; }
+
+/* error messages from PHP */
+form span {
+  display: inline-block;
+  width: 100%; /* Forces error text to break to a new line if it appears */
+  margin: 0;
+  font-size: 0.75rem;
+  color: #e74c3c !important;
+}
+
+/* ---------- BUTTONS ---------- */
+button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 13px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: #fff;
+  background: var(--violet);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s, color 0.3s;
+}
+button:hover  { background: var(--violet-dark); transform: translateY(-2px); }
+button:active { transform: translateY(0); }
+
+/* Submit button inside horizontal form */
+form:has(> h1) button {
+  width: auto;
+  margin: 0;
+  margin-left: auto; /* Pushes the button to the far right of the screen */
+  padding: 12px 35px;
+}
+
+/* buttons outside the card */
+body > form:not(:has(> h1)) button {
+  width: auto;
+  margin-top: 0;
+  padding: 11px 26px;
+}
+
+/* "Retour à la liste" */
+button[name^="Retour"] {
+  color: var(--violet);
+  background: #fff;
+  border: 2px solid var(--violet);
+}
+button[name^="Retour"]:hover { color: #fff; background: var(--violet); }
+
+/* index: "ADD NEW" */
+body > form[action="Ajouter.php"] button {
+  display: inline-flex;
+  align-items: center;
+  background: linear-gradient(135deg, var(--violet), var(--purple));
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+body > form[action="Ajouter.php"] button::before {
+  content: "+";
+  margin-right: 10px;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+/* ---------- TABLE ---------- */
+table {
+  width: 100%;
+  max-width: 1100px;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(43, 37, 80, 0.12);
+  animation: fadeIn 0.5s ease;
+}
+
+th {
+  padding: 18px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: left;
+  color: #fff;
+  background: var(--night);
+}
+
+td {
+  padding: 14px 16px;
+  font-size: 0.9rem;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--line);
+}
+
+td:first-child { font-weight: 600; color: #8a88a8; }
+
+tbody tr { transition: background 0.2s; }
+tbody tr:hover { background: #f5f6ff; }
+tbody tr:last-child td { border-bottom: none; }
+
+/* action buttons */
+td:last-child { font-size: 0; white-space: nowrap; }
+td form { display: inline-block; margin: 0; }
+
+td button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  font-size: 0;
+  border-radius: 0;
+}
+td button:hover { transform: none; filter: brightness(0.92); }
+td form:first-child button { border-radius: 6px 0 0 6px; }
+td form:last-child button  { border-radius: 0 6px 6px 0; }
+
+td button::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+td button[name="details"]   { background: var(--violet); }
+td button[name="Modifier"]  { background: #f7b955; }
+td button[name="Supprimer"] { background: #ef6f7a; }
+
+td button[name="details"]::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 4.5C7 4.5 2.7 7.6 1 12c1.7 4.4 6 7.5 11 7.5s9.3-3.1 11-7.5c-1.7-4.4-6-7.5-11-7.5zM12 17a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6z'/%3E%3C/svg%3E");
+}
+td button[name="Modifier"]::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z'/%3E%3C/svg%3E");
+}
+td button[name="Supprimer"]::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z'/%3E%3C/svg%3E");
+}
+
+/* ---------- DETAILS ---------- */
+body > ul {
+  list-style: none;
+  width: 100%;
+  max-width: 560px;
+  padding: 10px 28px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(43, 37, 80, 0.12);
+  animation: fadeIn 0.5s ease;
+}
+
+body > ul li {
+  display: flex;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  word-break: break-word;
+}
+body > ul li:last-child { border-bottom: none; }
+
+body > ul li strong {
+  flex: 0 0 110px;
+  font-size: 0.85rem;
+  color: var(--violet);
+}
+
+/* ---------- ANIMATIONS ---------- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes shake {
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 900px) {
+  body { padding: calc(var(--topbar) + 24px) 16px 32px; }
+  body::before { display: none; }
+  body::after { left: 0; padding: 0 16px; }
+  table { display: block; overflow-x: auto; }
+}

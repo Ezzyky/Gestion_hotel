@@ -112,8 +112,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
+    <title>Ajouter un client</title>
+<link rel="stylesheet" href="../css/client.css">
 
 </head>
 <body>
@@ -122,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
         <h1>Ajouter un client</h1>
 
         <label for="nom">Nom</label><br>
-        <input type="text" id="nom" name="nom" placeholder="Entrez le nom du client"  ><br>
+        <input type="text" id="nom" name="nom" placeholder="Entrez le nom du client"   ><br>
         <span style="color: red;"><?php 
         if(!empty($nom_empty)){
         echo $nom_empty;

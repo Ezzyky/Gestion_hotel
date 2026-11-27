@@ -23,6 +23,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 <head>
     <meta charset="UTF-8">
     <title>Détails du client</title>
+<link rel="stylesheet" href="../css/client.css">
 </head>
 <body>
     <h1>Détails du client #<?= htmlspecialchars($client['id']) ?></h1>
