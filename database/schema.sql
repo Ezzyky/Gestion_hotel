@@ -35,18 +35,19 @@ CREATE TABLE clients (
 
 CREATE TABLE chambres (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    numero_chambre VARCHAR(10) NOT NULL UNIQUE,
+    numero_chambre INT NOT NULL UNIQUE,
     type VARCHAR(50) NOT NULL,
     prix_par_nuit DECIMAL(10,2) NOT NULL,
     capacite INT NOT NULL,
     status VARCHAR(30) NOT NULL DEFAULT 'disponible',
     description TEXT NULL,
-
+    ADD COLUMN created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
     CONSTRAINT chk_chambre_prix
         CHECK (prix_par_nuit > 0),
 
     CONSTRAINT chk_chambre_capacite
         CHECK (capacite > 0)
+    
 );
 
 

@@ -114,7 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
         if ($flag===0){
             $sql = "UPDATE clients
         SET nom = ?, prenom = ?, email = ?, telephone = ?,
-            nationality = ?, ville = ?, pays = ?, adresse = ?
+            nationality = ?, ville = ?, pays = ?, adresse = ? 
         WHERE id = ?";
 
         $stmt = $pdo->prepare($sql);
@@ -128,7 +128,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
             $ville,
             $pays,
             $adresse,
-            $id
+            $id,
+            
         ]);
             header("Location: index.php");
             exit();
@@ -151,12 +152,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
 <link rel="stylesheet" href="../css/client.css">
 </head>
 <body>
+    <nav class="sidebar">
+    <a href="../dashboard.php" class="link-dashboard">dashboard</a>
+    <a href="../clients/index.php" class="link-clients">Clients</a>
+    <ul>
+        <li><a href="../clients/Ajouter.php">Ajouter un client</a></li>
+    </ul>
+
+    <a href="../chambres/index.php" class="link-chambres">Chambres</a>
+    <ul>
+        <li><a href="../chambres/ajouter.php">Ajouter une chambre</a></li>
+    </ul>
+</nav>
     <form action="Modifier.php" method="POST">
         <input type="hidden" name="id" value="<?= $id ?>">
-        <h1>Modifier du client<?= $client["id"] ?></h1>
+        <h1>Modifier du client <?= $client["id"] ?></h1>
 
         <label for="nom">Nom</label><br>
-        <input type="text" id="nom" name="nom" placeholder="Entrez le nom du client" value="<?= htmlspecialchars($client['nom']) ?>" ?>"  ><br>
+        <input type="text" id="nom" name="nom" placeholder="Entrez le nom du client" value="<?= htmlspecialchars($client['nom']) ?>" ><br>
         <span style="color: red;"><?php 
         if(!empty($nom_empty)){
         echo $nom_empty;
@@ -415,8 +428,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
         ?></span>
 
         <label for="adresse">Adresse</label><br>
-        <input type="text" id="adresse" name="adresse" value="<?= htmlspecialchars($client['adresse']) ?>">
-    <span style="color: red;"><?php 
+        <input type="text" id="adresse" name="adresse" placeholder="Saisissez l'adresse complète du client." value="<?= htmlspecialchars($client['adresse']) ?>">
+        <span style="color: red;"><?php 
         
         if(!empty($adresse_invalid)){
             echo $adresse_invalid;
@@ -425,6 +438,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
         echo $error;
         }
         ?></span><br>    
+
+        
         <button type="submit" id="modifier" name="modifier" >modifier</button>
 
         </form>

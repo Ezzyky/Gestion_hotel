@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
     if (isset($_GET["Modifier"])) {
         $id = $_GET['id'];
         if ($id !== false && $id !== null && $id > 0) {
-            header("Location: modifier.php?id=" . $id);
+            header("Location: Modifier.php?id=" . $id);
             exit;
         }        
     }
@@ -47,6 +47,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
 <link rel="stylesheet" href="../css/client.css">
 </head>
 <body>
+    <nav class="sidebar">
+    <a href="../dashboard.php" class="link-dashboard">dashboard</a>
+    <a href="../clients/index.php" class="link-clients">Clients</a>
+    <ul>
+        <li><a href="../clients/Ajouter.php">Ajouter un client</a></li>
+    </ul>
+
+    <a href="../chambres/index.php" class="link-chambres">Chambres</a>
+    <ul>
+        <li><a href="../chambres/ajouter.php">Ajouter une chambre</a></li>
+    </ul>
+</nav>
     <form action="Ajouter.php" method="GET">
             <button type="submit">Ajouter un client</button>
         </form>
